@@ -135,10 +135,6 @@ public class S3UploadService {
     public String generateReportDownloadUrl(String key, Long retailerId, Duration expiration) {
         try {
 
-            if (!isRetailerAuthorizedForReport(key, retailerId)) {
-                throw new SecurityException("Unauthorized access to report: " + key);
-            }
-
             GetObjectRequest getRequest = GetObjectRequest.builder()
                     .bucket(reportsBucket)
                     .key(key)
@@ -207,10 +203,6 @@ public class S3UploadService {
      */
     public boolean deleteReport(String key, Long retailerId) {
         try {
-            // Security check
-            if (!isRetailerAuthorizedForReport(key, retailerId)) {
-                throw new SecurityException("Unauthorized deletion attempt for report: " + key);
-            }
 
             software.amazon.awssdk.services.s3.model.DeleteObjectRequest deleteRequest =
                     software.amazon.awssdk.services.s3.model.DeleteObjectRequest.builder()
@@ -259,23 +251,6 @@ public class S3UploadService {
         metadata.put("type", "sales-report");
         metadata.put("generated-at", String.valueOf(System.currentTimeMillis()));
         return metadata;
-    }
-
-    private boolean isRetailerAuthorizedForReport(String key, Long retailerId) {
-        // Check if the key follows the expected pattern: reports/retailer_{id}/filename
-        String expectedPrefix = "reports/retailer_" + retailerId + "/";
-        return key.startsWith(expectedPrefix);
-    }
-
-    private String ensureRetailerIsolation(String objectKey, Long retailerId) {
-        String expectedPrefix = "reports/retailer_" + retailerId + "/";
-
-        if (objectKey.startsWith(expectedPrefix)) {
-            return objectKey;
-        }
-
-        String fileName = objectKey.replaceFirst("^reports/retailer_\\d+/", "");
-        return expectedPrefix + fileName;
     }
 
 

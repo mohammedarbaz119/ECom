@@ -1,8 +1,8 @@
 package com.test.commerce.controllers;
 
 import com.test.commerce.jobs.OrderDeliveryService;
-import com.test.commerce.model.Customer;
 import com.test.commerce.model.Order;
+import com.test.commerce.repositories.CartRepository;
 import com.test.commerce.repositories.CustomerRepository;
 import com.test.commerce.repositories.OrderRepository;
 import com.test.commerce.services.OrderService;
@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/customer/orders")
@@ -35,8 +34,15 @@ public class OrderController {
     @Autowired
     private OrderDeliveryService orderDeliveryService;
 
+    @Autowired
+    private CartRepository cartRepository;
+
     @PostMapping("/{cartId}/placeOrder")
     public ResponseEntity<Map<String, Long>> placeOrder(@PathVariable Long cartId, Principal principal) {
+       boolean doesCartBleongtoCustomer = cartRepository.doesCartBelongToCustomer(cartId, principal.getName());
+       if(!doesCartBleongtoCustomer){
+           throw  new ResponseStatusException(HttpStatus.FORBIDDEN,"cart with id  "+cartId +" is not woned by this customer");
+       }
         Long orderid = orderService.PlaceOrder(cartId, principal.getName());
         Map<String, Long> r = new HashMap<>();
         r.put("orderId", orderid);

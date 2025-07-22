@@ -64,7 +64,7 @@ public class OrderService {
         orderItemRepository.saveAll(list);
         orderDeliveryService.scheduleDelivery(order.getId(), DELIVERY_DURATION);
         cartItemRepository.deleteAllById(cart.getItems().stream().map(CartItem::getId).toList());
-        cart.setItems(new ArrayList<>());
+        cart.getItems().clear();
         cart.setQuantity(0);
         cartRepository.save(cart);
         return order.getId();

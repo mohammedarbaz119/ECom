@@ -59,13 +59,12 @@ public class ProductService {
 
     public List<ProductData> getProducts(Long RetailerId, boolean inStock) {
         List<ProductData> data = productRepository.findAllByRetailorWithCategoryName(RetailerId, inStock);
-        data.stream().map(l -> {
+        return data.stream().map(l -> {
             if (l.getImageUrl() != null && !(l.getImageUrl().isEmpty())) {
                 l.setImageUrl(s3UploadService.getObjectUrl(l.getImageUrl()));
             }
             return l;
-        });
-        return data;
+        }).toList();
     }
 
     public Page<CustomerProductData> searchProducts(Long retailerId, Long categoryId, String searchTerm, Boolean inStock, String sortBy, int page, int size) {

@@ -29,6 +29,6 @@ public class ProductCreationDto {
     @NotBlank(message = "Product category is required")
     private String category;
 
-    @URL(message = "url must be a valid url")
+    @NotBlank(message = "url key must be present")
     private String imageUrl;
 }

@@ -20,5 +20,10 @@ public interface CartRepository extends JpaRepository<Cart,Long> {
             """)
     Optional<Cart> findCartwithfetch(@Param("customerId") Long customerId);
 
+    @Query("""
+           SELECT COUNT(*)>0 FROM Cart c WHERE c.id = :cartId and c.customer.email = :email
+            """)
+    boolean doesCartBelongToCustomer(@Param("cartId") Long cartId,@Param("email") String email);
+
     Optional<Cart> findByCustomerID(Long customerId);
 }

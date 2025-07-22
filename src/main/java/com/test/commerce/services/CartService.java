@@ -53,7 +53,7 @@ public class CartService {
         if (product.getStock() < quantity) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity cannot be greater than stock");
         }
-        Optional<CartItem> p = cart.getItems().stream().filter(l->l.getId()== product.getId()).findFirst();
+        Optional<CartItem> p = cart.getItems().stream().filter(l-> Objects.equals(l.getProduct().getId(), product.getId())).findFirst();
         if(p.isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"product is already present in cart increase quantity");
         }

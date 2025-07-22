@@ -74,6 +74,8 @@ public class RetailerController {
         response.put("error", "Report generation failed");
         return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(response);
     } else if (report.getStatus()==ReportStatus.GENERATED) {
+        response.put("message","Report generated successfully");
+        response.put("active","5 hours");
         response.put("reportUrl", s3UploadService.generateReportDownloadUrl(report.getS3FilePath(), report.getRetailer().getID(), Duration.ofHours(5)));
         return ResponseEntity.ok(response);
      }
