@@ -34,20 +34,24 @@ public class SecurityConfig {
     private AuthenticationProvider authenticationProvider;
 
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(CsrfConfigurer::disable).cors(cors-> cors.configurationSource(corsConfigurationSource()) )
-                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/customer/**").hasAuthority("CUSTOMER")
-                        .requestMatchers("/api/retailer/**","/api/products/retailer/**").hasAuthority("RETAILER")
+        http.csrf(CsrfConfigurer::disable).cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(
+                                "/v3/api-docs/**"
+                        ).permitAll()
+                        .requestMatchers("/api/customer/**").hasAuthority("CUSTOMER")
+                        .requestMatchers("/api/retailer/**", "/api/products/retailer/**").hasAuthority("RETAILER")
                         .requestMatchers("/api/uploads/**").authenticated()
                         .anyRequest().permitAll()
-                ).exceptionHandling(e->e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                ).exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .authenticationProvider(authenticationProvider)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
