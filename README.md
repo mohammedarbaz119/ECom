@@ -11,7 +11,7 @@ A full-featured e-commerce platform built with Spring Boot and PostgreSQL, suppo
 - **Authorization**: Role-based access to platform features
 
 ### Product Management (Retailer)
-- **Product Creation**: Add products with name, description, cost, MRP, and category
+- **Product Creation**: Add products with name, description, cost, MRP, and category,and Image Url using S3 Presigned Uploads
 - **Input Validation**: Comprehensive validation for product data
 - **Inventory Management**: Track stock levels and out-of-stock status
 - **Product Listing**: View all products with sorting and filtering options
@@ -53,7 +53,7 @@ A full-featured e-commerce platform built with Spring Boot and PostgreSQL, suppo
 
 ## Prerequisites
 
-- Java 17 or higher
+- Java 17
 - Maven 3.6+
 - PostgreSQL 15+
 - AWS Account with S3 access
@@ -63,8 +63,8 @@ A full-featured e-commerce platform built with Spring Boot and PostgreSQL, suppo
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd ecom
+git clone https://github.com/mohammedarbaz119/ECom
+cd ECom
 ```
 
 ### 2. Install Dependencies
