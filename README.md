@@ -215,16 +215,23 @@ Once the application is running, access the API documentation at:
 ## Project Structure
 ```
 ecom/
-├── src/main/java/com/ecom/
-│   ├── controller/     # REST Controllers
-│   ├── service/        # Business Logic
-│   ├── repository/     # Data Access Layer
+├── src/main/java/com/test/commerce
+│   ├── controllers/    # REST Controllers
+│   ├── services/       # Business Logic
+│   ├── repositories/   # Data Access Layer
 │   ├── model/          # Entity Classes
-│   ├── dto/            # Data Transfer Objects
+│   ├── dtos/           # Data Transfer Objects
 │   ├── config/         # Configuration Classes
-│   └── util/           # Utility Classes
+│   ├── jobs/           # for Background Jobs
+│   ├── exceptions/     # Global Exception Handling
+│   ├── validations/    # for Custom Validations
+│   ├── enums/          # enum utils
+│   ├── CommerceApplication # main file entry point
+│   └── JwtAuthFlter    # Filter for JWT's
+     
 ├── src/main/resources/
 │   ├── application.yml # Application Configuration
+│   ├── AlterSequence.sql # SQl file for alter the start of PostgreSQL
 │   └── static/         # Static Resources
 ├── .env                # Environment Variables
 ├── pom.xml            # Maven Configuration
